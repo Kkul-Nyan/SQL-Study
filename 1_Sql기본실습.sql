@@ -27,8 +27,8 @@ INSERT INTO `user1` VALUES('A103','장보고','010-1234-3333',32);
 INSERT INTO `user1` (`uid`,`name`,`age`) values('A104','강감찬',45);
 INSERT INTO `user1` SET `uid`='A105', `name`='이순신', `hp`='010-1234-5555';
 INSERT INTO `user1` SET
-								`uid`  = 'A105';
-								`name` = '이순신';
+								`uid`  = 'A105',
+								`name` = '이순신',
 								`hp`   = '010-1234-5555';
 
 

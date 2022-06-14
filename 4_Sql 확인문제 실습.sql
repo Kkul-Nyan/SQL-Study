@@ -3,6 +3,8 @@
 #내용 : SQL 확인문제 실습
 
 
+
+
 #실습하기 4-1
 CREATE TABLE `tbl_menber` (
  `memberId` VARCHAR(10) PRIMARY KEY,
@@ -23,8 +25,11 @@ CREATE TABLE `tbl_menber` (
 #실습하기 4-2
 INSERT INTO `tbl_member` VALUES ('p101','김유신','010-1234-1001',25,'신라');
 INSERT INTO `tbl_member` VALUES ('p102','김춘추','010-1234-1002',23,'신라');
-insult INTO `tbl_member` (`memberID`,`memberName`,`memberAge`,`memberAddr`)
-								 VALUES ('p103','장보고',
+insert INTO `tbl_member` (`memberID`,`memberName`,`memberAge`,`memberAddr`)
+								 VALUES ('p103','장보고','고리');
+
+INSERT INTO `tbl_member` SET
+									`memberID 								 
 
 
 
