@@ -154,19 +154,168 @@ FROM
 WHERE 
     `year` = 2020;
 
-#실습하기 5-7
+#실습하기 5-7 
+SELECT * FROM `sales` Group BY `uid`; #겹친다면 먼저 검색된게 나오고 뒤에껀 버린다.
+SELECT * FROM `sales` Group BY `year`;
+SELECT * FROM `sales` Group BY `uid`,`year`;
+SELECT `uid`, COUNT(*) AS `건수` FROM `sales` GROUP BY `uid`;
+SELECT `uid`, SUM(sale) AS `합계` FROM `sales` GROUP BY `uid`;
+SELECT `uid`, AVG(sale) AS `평균` FROM `sales` GROUP BY `uid`;
 
+SELECT `uid`, `year`, SUM(sale) AS `합계`
+FROM `sales`
+GROUP BY `uid`,`year`
 
+SELECT `uid`, `year`, SUM(sale) AS `합계`
+FROM `sales`
+GROUP BY `uid`,`year`
+ORDER BY `year` ASC, `합계`DESC;
 
-
-
-
-
-
-
+SELECT `uid`,`year`,SUM(sale)AS`합계`
+FROM `sales`
+GROUP BY `uid`,`year`
+ORDER BY `합계`DESC
 
 #실습하기 5-8
+SELECT `uid`, SUM(sale) AS`합계` FROM `sales`
+GROUP BY `uid`
+HAVING SUM(sale)>=20000;
+
+SELECT `uid`,`year`, SUM(sale) AS`합계` 
+FROM `sales`
+WHERE `sale`>= 100000
+GROUP BY `uid`,`year`
+HAVING SUM(sale)>=200000
+ORDER BY `합계` DESC;
+
 #실습하기 5-9
+CREATE table `sales2` LIKE `sales`;
+insert INTO `sales2` SElect * FROM `sales`;
+UPDATE `sales2` SET `year`= `year`+3;
+
+SELECT * FROM `sales`UNION SELECT *FROM `sales2`
+(SELECT * FROM `sales`)
+
+ 
+
+SELECT `uid`,`year`, SUM(`sale`) AS`합계`
+FROM `sales`
+GROUP BY `uid`, `year`
+UNION
+SELECT `uid`,`year`, SUM(`sale`) AS`합계`
+FROM `sales2`
+GROUP BY `uid`, `year`
+ORDER BY `year` ASC, `합계` DESC; 
+
 #실습하기 5-10
+
+SELECT * FROM `Sales` UNION ALL SELECT * FROM `sales2`
+
 #실습하기 5-11
-#실습하기 5-12
+SELECT * 
+FROM `sales` 
+JOIN `member`
+ON `sales`.uid = `member`.`uid`;   #서로 공통된부분이 있어야 조인시킨다(인너는 어차피 인너조인이므로 생략)
+
+SELECT * 
+FROM `sales`  AS a     #a,b로 별칭을 줘서 처리한다.
+JOIN `member` AS b
+ON a.`uid` = b.`uid`;
+
+SELECT 
+		a.seq,
+		a.uid,
+		a.year,
+		a.month,
+		a.sale,
+		b.name,
+		b.hp,
+		b.pos
+FROM `sales`  AS a    
+JOIN `member` AS b
+ON a.uid = b.uid;
+
+selcet *
+FROM `sales` AS a
+JOIN `member` AS b
+USING(`uid`)
+
+SELECT *
+FROM `sales`      AS a
+JOIN `member`     AS b ON a.uid = b.uid
+JOIN `department` AS c ON b.dep = c. depNo
+
+
+
+
+
+
+
+#실습하기 5-12 한쪽의 차집합 부분도 나오게된다.
+SELECT *FROM `sales` AS a
+left JOIN `member` as b
+ON a.uid = b.uid;
+
+SELECT *FROM `sales` AS a
+right JOIN `member` as b
+ON a.uid = b.uid;
+
+#확인문제
+#1. 모든 직원의 아이디, 이름, 직급, 부서명을 조회하시오
+SELECT 
+		b.`uid`,
+		b.`name`,
+		b.`pos`,
+		c.`name`		 
+FROM `member`     AS b
+JOIN `department` AS c
+ON b.dep = c.depno
+
+#2. '김유신' 직원의 2019년도 매출의 합을 조회하시오
+
+SELECT 
+		b.name,
+		a.year,
+		a.uid,
+		SUM(`sale`) AS `합계`
+FROM `sales`      AS a
+JOIN `member`     AS b
+ON a.uid = b.uid
+WHERE 
+	b.name = '김유신' AND
+	a.year = 2019;
+	
+#3. 
+SELECT
+		b.name,
+		c.name,
+		b.pos,
+		a.year,
+		SUM(`sale`) AS `합계`		
+FROM `sales` AS a
+JOIN `member` AS b ON a.uid=b.uid
+JOIN `department` AS c ON b.dep = c.depNo
+WHERE 
+	`sale` >= 50000 AND `year` = 2019
+GROUP BY a.`uid`
+HAVING `합계`>=100000
+ORDER BY `합계` DESC;	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
