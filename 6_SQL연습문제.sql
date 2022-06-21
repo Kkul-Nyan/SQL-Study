@@ -149,16 +149,28 @@ SELECT
 SELECT count(orderid) AS `판매건수` FROM `orders` ;
 
 #문제32--------------------------------------------------------------------
-SELECT `bookname` from `book` REPLACE '야구','농구'
+SELECT
+	`bookid`,
+	 REPLACE(`bookname`,'야구','농구') AS `bookname`,
+	 `publisher`,
+	 `price` 
+FROM `book`;
+	  
 
 #문제33
-SELECT custid, COUNT(orderid) AS`수량` FROM `orders` WHERE `saleprice` >= 8000   GROUP BY `custid` having count(orderid)>1
+SELECT custid, 
+      COUNT(orderid) AS`수량` 
+FROM `orders` 
+WHERE `saleprice` >= 8000   
+GROUP BY `custid` 
+HAVING count(orderid)>=2
 
 #문제34
 SELECT * from  
 `Customer` AS a
 JOIN `orders` AS b
-ON a.custid= b.custid;
+ON a.custid= b.custid
+ORDER BY a.custid;
 
 #문제35
 SELECT * from  
@@ -167,19 +179,33 @@ JOIN `orders` AS b
 ON a.custid= b.custid
 ORDER BY a.custid ,b.custid;
 
+SELECT * from  
+`Customer` 
+JOIN `orders`
+USING(`custid`)
+
+SELECT * FROM 
+`Customer` AS a,
+`Orders` AS b 
+WHERE a.custid=b.custid;
+
 #문제36
-SELECT a.name, b.saleprice FROM `Customer` AS a
+SELECT 
+     a.`name`,
+     b.`saleprice` 
+FROM `Customer` AS a
 JOIN `orders` AS b
 ON a.custid= b.custid;
 
 #문제37
 SELECT 
-		a.name,
+		a.`name`,
 		SUM(saleprice) 
 FROM `Customer` AS a
 JOIN `orders` AS b
 ON a.custid= b.custid
-GROUP BY a.name
+GROUP BY a.`custid`
+ORDER BY `name`;
 
 #문제38
 SELECT 
@@ -196,7 +222,7 @@ SELECT
 FROM `Customer` AS a
 JOIN `orders` AS b ON a.custid = b.custid
 JOIN `book` AS c ON b.bookid = c.bookid
-WHERE b.saleprice = 20000;
+WHERE price = 20000;
 
 #문제40
 SELECT 
@@ -206,15 +232,46 @@ FROM `Customer` AS a
 left JOIN `orders` AS b ON a.custid = b.custid
 left JOIN `book` AS c ON b.bookid = c.bookid 
 
+SELECT `name`,`saleprice` FROM `orders` AS a
+RIGHT JOIN `customer` AS b
+ON a.custid = b.custid;
+
 #문제41
-SELECT `bookname` FROM `book` WHERE MAX(`price`)
+SELECT `bookname` FROM `book` order BY `price` DESC LIMIT 1;
+SELECT * FROM `book` WHERE `price` =(SELECT MAX(`price`)FROM`book`);
+
 
 #문제42
-#문제43
-#문제44
-#문제45
-#문제46
+SELECT 
+		a.name
+FROM `Customer` AS a
+left JOIN `orders` AS b ON a.custid = b.custid
+left JOIN `book` AS c ON b.bookid = c.bookid
+ORDER BY b.`saleprice` LIMIT 1
 
+SELECT `name` FROM `customer`
+LEFT JOIN `orders`
+USING(`custid`)
+WHERE `orderid` IS NULL;
+
+
+#문제43
+SELECT
+  		SUM(b.saleprice) AS `총매출`
+FROM `Customer` AS a
+JOIN `orders` AS b ON a.custid = b.custid
+JOIN `book` AS c ON b.bookid = c.bookid
+WHERE a.`name` = '김연아'
+GROUP BY a.`name`;
+
+#문제44
+INSERT INTO `book` (`bookid`,`bookname`,`publisher`) VALUES (11,'스포츠의학','한솔의학서적')
+
+#문제45
+UPDATE `Customer` SET `address`='대한민국 부산' WHERE `custid`=5;
+
+#문제46
+DELETE FROM `Customer` WHERE `custid`=5;
 
 
 
